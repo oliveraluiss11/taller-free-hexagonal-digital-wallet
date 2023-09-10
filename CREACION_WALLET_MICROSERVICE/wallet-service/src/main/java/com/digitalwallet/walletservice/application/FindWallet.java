@@ -14,7 +14,8 @@ public class FindWallet {
 
     public Wallet findByPhoneNumber(String phoneNumber){
         if (!phoneNumber.matches("9[0-9]{8}")){
-            throw new WalletGenericClientException("El número de teléfono es inválido", HttpStatus.BAD_REQUEST);
+            throw new WalletGenericClientException("El número de teléfono es inválido"
+                    , HttpStatus.BAD_REQUEST);
         }
         return walletRepository.findByPhoneNumber(phoneNumber);
     }

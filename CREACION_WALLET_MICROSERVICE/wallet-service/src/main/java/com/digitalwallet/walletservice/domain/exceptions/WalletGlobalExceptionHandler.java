@@ -1,5 +1,7 @@
 package com.digitalwallet.walletservice.domain.exceptions;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,7 +10,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,5 +37,26 @@ public class WalletGlobalExceptionHandler {
             walletError = new WalletError(status,message,ex.getCode());
         }
         return new ResponseEntity<>(walletError, walletError.getStatus());
+    }
+
+    @ExceptionHandler({ ConstraintViolationException.class })
+    public ResponseEntity<WalletError> handleConstraintViolation(
+            ConstraintViolationException ex) {
+        List<String> errors = new ArrayList<String>();
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errors.add(violation.getRootBeanClass().getName() + " " +
+                    violation.getPropertyPath() + ": " + violation.getMessage());
+        }
+        WalletError error = new WalletError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+        return new ResponseEntity<WalletError>(
+                error, error.getStatus());
+    }
+
+    @ExceptionHandler({ Exception.class })
+    public ResponseEntity<WalletError> handleAll(Exception ex, WebRequest request) {
+        WalletError error = new WalletError(
+                HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
+        return new ResponseEntity<WalletError>(
+                error, new HttpHeaders(), error.getStatus());
     }
 }

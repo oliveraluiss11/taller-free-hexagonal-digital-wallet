@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class CreateWallet {
     private final WalletRepository walletRepository;
     public void create(Wallet wallet){
-        walletRepository.save(Wallet
+        walletRepository.saveOnlyOne(Wallet
                 .builder()
                         .balance(BigDecimal.ZERO)
                         .currency("PEN")
