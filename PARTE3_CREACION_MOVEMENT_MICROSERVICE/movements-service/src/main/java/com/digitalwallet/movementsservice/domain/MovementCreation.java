@@ -21,11 +21,10 @@ public class MovementCreation {
     private String currency;
 
     @NotNull
-    @DecimalMin(value = "0.0", inclusive = false, message = "Amount must be greater than 0")
     private BigDecimal amount;
 
     @NotBlank
-    @Pattern(regexp = "^(INCOME|WITHDRAW)$", message = "TypeTransaction must be INCOME or WITHDRAW")
+    @Pattern(regexp = "^(TRANSFER)$", message = "TypeTransaction must be TRANSFER")
     private String typeTransaction;
 
     @NotBlank
