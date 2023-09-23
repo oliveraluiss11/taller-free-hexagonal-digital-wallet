@@ -60,6 +60,8 @@ paths:
       responses:
         '201':
           description: CREATED
+        '409':
+          description: CONFLICT
     get:
       tags: ['Movements']
       parameters:
@@ -73,5 +75,9 @@ paths:
           description: OK
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/Movement'
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movement'
+        '204':
+          description: NO_CONTENT
