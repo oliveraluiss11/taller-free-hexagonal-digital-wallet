@@ -1,0 +1,77 @@
+openapi: '3.0.2'
+info:
+  title: Movement Microservice
+  version: '1.0'
+servers:
+  - url: http://localhost:9003
+
+components:
+  schemas:
+    MovementCreation:
+      type: object
+      properties:
+        transferId:
+          type: string
+        operationNumber:
+          type: string
+        typeTransaction:
+          type: string
+        currency:
+          type: string
+        amount:
+          type: number
+        walletId:
+          type: string
+    Movement:
+      type: object
+      properties:
+        movementId:
+          type: string
+        transferId:
+          type: string
+        operationNumber:
+          type: string
+        typeTransaction:
+          type: string
+        currency:
+          type: string
+        amount:
+          type: number
+        walletId:
+          type: string
+        registrationDate:
+          type: string
+paths:
+  /movements:
+    post:
+      tags: ['Movements']
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/MovementCreation'
+            example:
+              transferId: 573a7c5b-a78a-49fb-947d-f80a76c29a70
+              operationNumber:  c5a61c06-8de8-456d-bffa-84471633355f
+              typeTransaction: INCOME|WITHDRAW
+              currency: PEN|USD
+              amount: 300.00
+              walletId: 18cd85b4-7fb1-4254-95de-a1e60256053a
+      responses:
+        '201':
+          description: CREATED
+    get:
+      tags: ['Movements']
+      parameters:
+        - in: query
+          name: walletId
+          schema: 
+            type: string
+          description: Filter by walletId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Movement'
