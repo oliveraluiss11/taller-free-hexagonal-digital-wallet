@@ -5,6 +5,7 @@ info:
 paths:
   /transfers:
     post:
+      tags: ['Transfer']
       summary: Realizar una transferencia
       requestBody:
         required: true
