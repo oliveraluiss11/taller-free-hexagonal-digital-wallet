@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: Transfer Microservice
+  version: 1.0.0
+paths:
+  /transfers:
+    post:
+      summary: Realizar una transferencia
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
+            example:
+              originPhoneNumber: "912345678"
+              destinationPhoneNumber: "998765432"
+      responses:
+        '201':
+          description: Transferencia exitosa
+components:
+  schemas:
+    TransferRequest:
+      type: object
+      properties:
+        originPhoneNumber:
+          type: string
+          pattern: '^9[0-9]{8}$'  # Empieza con 9 y tiene 8 dígitos adicionales
+          description: Número de teléfono de origen (debe empezar con 9 y tener 9 dígitos)
+        destinationPhoneNumber:
+          type: string
+          pattern: '^9[0-9]{8}$'  # Empieza con 9 y tiene 8 dígitos adicionales
+          description: Número de teléfono de destino (debe empezar con 9 y tener 9 dígitos)
+      required:
+        - originPhoneNumber
+        - destinationPhoneNumber
